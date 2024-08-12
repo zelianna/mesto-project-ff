@@ -1,6 +1,7 @@
 import './pages/index.css';
 import { initialCards } from './scripts/cards';
 import avatar from './images/avatar.jpg';
+import { openModal, closeModal } from './components/modal.js';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.style.backgroundImage = `url(${avatar})`;
@@ -43,24 +44,6 @@ initialCards.forEach((cardData) => {
   cardList.append(cardElement);
 });
 
-function openModal(popup) {
-  popup.classList.add('popup_is-opened');
-  document.addEventListener('keydown', escCloseModal);
-}
-
-function closeModal(popup) {
-  popup.classList.remove('popup_is-opened');
-  document.removeEventListener('keydown', escCloseModal);
-}
-
-function escCloseModal(event) {
-  if (event.key === 'Escape') {
-    const openedPopup = document.querySelector('.popup_is-opened');
-    if (openedPopup) {
-      closeModal(openedPopup);
-    }
-  }
-}
 
 const popups = document.querySelectorAll('.popup');
 
