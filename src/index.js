@@ -42,3 +42,59 @@ initialCards.forEach((cardData) => {
   const cardElement = createCard(cardData, deleteCard);
   cardList.append(cardElement);
 });
+
+function openModal(popup) {
+  popup.classList.add('popup_is-opened');
+  document.addEventListener('keydown', escCloseModal);
+}
+
+function closeModal(popup) {
+  popup.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', escCloseModal);
+}
+
+function escCloseModal(event) {
+  if (event.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_is-opened');
+    if (openedPopup) {
+      closeModal(openedPopup);
+    }
+  }
+}
+
+const popups = document.querySelectorAll('.popup');
+
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
+const closeButtons = document.querySelectorAll('.popup__close');
+
+const editProfilePopup = document.querySelector('.popup_type_edit');
+const newCardPopup = document.querySelector('.popup_type_new-card');
+const imagePopup = document.querySelector('.popup_type_image');
+
+editButton.addEventListener('click', () => {
+  openModal(editProfilePopup);
+});
+
+addButton.addEventListener('click', () => {
+  openModal(newCardPopup);
+});
+
+closeButtons.forEach(button => {
+  const popup = button.closest('.popup');
+  button.addEventListener('click', () => {
+    closeModal(popup);
+  });
+});
+
+// Закрытие попапа при клике на оверлей
+popups.forEach(popup => {
+  popup.addEventListener('click', (event) => {
+    if (event.target === popup) {
+      console.log(event);
+      closeModal(popup);
+    }
+  });
+});
+ 
+
