@@ -1,6 +1,6 @@
-import '../pages/index.css';
-import { initialCards } from '../scripts/cards';
-import avatar from '../images/avatar.jpg';
+import './pages/index.css';
+import { initialCards } from './scripts/cards';
+import avatar from './images/avatar.jpg';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.style.backgroundImage = `url(${avatar})`;
