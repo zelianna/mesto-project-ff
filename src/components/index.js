@@ -1,7 +1,7 @@
-import './pages/index.css';
-import { initialCards } from './components/cards';
-import avatar from './images/avatar.jpg';
-import { openModal, closeModal } from './components/modal.js';
+import '../pages/index.css';
+import { initialCards } from './cards';
+import avatar from '../images/avatar.jpg';
+import { openModal, closeModal } from './modal.js';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.style.backgroundImage = `url(${avatar})`;
