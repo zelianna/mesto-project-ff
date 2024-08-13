@@ -54,8 +54,23 @@ const closeButtons = document.querySelectorAll('.popup__close');
 const editProfilePopup = document.querySelector('.popup_type_edit');
 const newCardPopup = document.querySelector('.popup_type_new-card');
 const imagePopup = document.querySelector('.popup_type_image');
+const nameInput = document.querySelector('.popup__input_type_name');
+const jobInput = document.querySelector('.popup__input_type_description');
+const profileName = document.querySelector('.profile__title');
+const profileJob = document.querySelector('.profile__description');
 
+/* function fillFormInputs({ nameInput, jobInput }, { nameValue, descriptionValue }) {
+  nameInput.value = nameValue;
+  jobInput.value = descriptionValue;
+}
+ */
 editButton.addEventListener('click', () => {
+  /* fillFormInputs(
+    { nameInput, jobInput },
+    { nameValue: profileName.textContent, descriptionValue: profileJob.textContent }
+  ); */
+  nameInput.value = profileName.textContent;
+  jobInput.value =  profileJob.textContent;
   openModal(editProfilePopup);
 });
 
@@ -74,10 +89,29 @@ closeButtons.forEach(button => {
 popups.forEach(popup => {
   popup.addEventListener('click', (event) => {
     if (event.target === popup) {
-      console.log(event);
       closeModal(popup);
     }
   });
 });
- 
+
+function handleFormSubmit(evt) {
+  evt.preventDefault(); 
+  
+  // Получаем значения из полей формы
+  const nameValue = nameInput.value;
+  const jobValue = jobInput.value;
+
+  // Обновляем текстовое содержимое этих элементов новыми значениями
+  profileName.textContent = nameValue;
+  profileJob.textContent = jobValue;
+  
+}
+
+editProfilePopup.addEventListener('submit', handleFormSubmit);  
+/* editProfilePopup.addEventListener('submit', () => {
+  handleFormSubmit();
+  closeModal(editProfilePopup);
+});  */
+
+
 

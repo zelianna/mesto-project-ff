@@ -8,7 +8,7 @@ export function closeModal(popup) {
     document.removeEventListener('keydown', escCloseModal);
   }
   
-export function escCloseModal(event) {
+function escCloseModal(event) {
     if (event.key === 'Escape') {
       const openedPopup = document.querySelector('.popup_is-opened');
       if (openedPopup) {
