@@ -1,5 +1,5 @@
 import './pages/index.css';
-import { initialCards } from './scripts/cards';
+import { initialCards } from './components/cards';
 import avatar from './images/avatar.jpg';
 import { openModal, closeModal } from './components/modal.js';
 
@@ -94,7 +94,7 @@ popups.forEach(popup => {
   });
 });
 
-function handleFormSubmit(evt) {
+function handleProfileSubmit(evt) {
   evt.preventDefault(); 
   
   // Получаем значения из полей формы
@@ -104,10 +104,10 @@ function handleFormSubmit(evt) {
   // Обновляем текстовое содержимое этих элементов новыми значениями
   profileName.textContent = nameValue;
   profileJob.textContent = jobValue;
-  
+  closeModal(editProfilePopup);
 }
 
-editProfilePopup.addEventListener('submit', handleFormSubmit);  
+editProfilePopup.addEventListener('submit', handleProfileSubmit);  
 /* editProfilePopup.addEventListener('submit', () => {
   handleFormSubmit();
   closeModal(editProfilePopup);
