@@ -1,10 +1,11 @@
 import { cardTemplate, cardList } from './index.js';
 
-// @todo: Функция создания карточки
-export function createCard(cardData, deleteCard) {
+// Функция создания карточки
+export function createCard(cardData, deleteCard, handleLikeButtonClick) {
     const cardElement = cardTemplate.cloneNode(true);
   
     const deleteButton = cardElement.querySelector(".card__delete-button");
+    const likeButton = cardElement.querySelector(".card__like-button");
     const cardImage = cardElement.querySelector(".card__image");
     const cardTitle = cardElement.querySelector(".card__title");
   
@@ -15,11 +16,19 @@ export function createCard(cardData, deleteCard) {
     deleteButton.addEventListener("click", () => {
       deleteCard(cardElement);
     });
-  
+    likeButton.addEventListener("click", handleLikeButtonClick);
+     
     return cardElement;
   }
 
-  // @todo: Функция удаления карточки
+  // Функция удаления карточки
 export function deleteCard(cardElement) {
     cardElement.remove();
   }
+
+  // Функция обработчика лайка
+export function handleLikeButtonClick(event) {
+    const likeButton = event.target;
+    likeButton.classList.toggle('card__like-button_is-active');
+  }
+  

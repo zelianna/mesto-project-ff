@@ -2,7 +2,7 @@ import '../pages/index.css';
 import { initialCards } from './cards';
 import avatar from '../images/avatar.jpg';
 import { openModal, closeModal } from './modal.js';
-import { createCard, deleteCard } from './card.js';
+import { createCard, deleteCard, handleLikeButtonClick } from './card.js';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.style.backgroundImage = `url(${avatar})`;
@@ -17,7 +17,7 @@ export const cardList = document.querySelector(".places__list");
 
 // Вывести карточки на страницу
 initialCards.forEach((cardData) => {
-  const cardElement = createCard(cardData, deleteCard);
+  const cardElement = createCard(cardData, deleteCard, handleLikeButtonClick);
   cardList.append(cardElement);
 });
 
@@ -103,7 +103,7 @@ function handleNewCardSubmit(evt) {
   };
 
   // Создаем карточку
-  const newCardElement = createCard(newCardData, deleteCard);
+  const newCardElement = createCard(newCardData, deleteCard, handleLikeButtonClick);
   cardList.prepend(newCardElement);
   closeModal(newCardPopup);
 
