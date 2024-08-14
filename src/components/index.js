@@ -17,7 +17,7 @@ export const cardList = document.querySelector(".places__list");
 
 // Вывести карточки на страницу
 initialCards.forEach((cardData) => {
-  const cardElement = createCard(cardData, deleteCard, handleLikeButtonClick);
+  const cardElement = createCard(cardData, deleteCard, handleLikeButtonClick, handleImageClick);
   cardList.append(cardElement);
 });
 
@@ -103,7 +103,7 @@ function handleNewCardSubmit(evt) {
   };
 
   // Создаем карточку
-  const newCardElement = createCard(newCardData, deleteCard, handleLikeButtonClick);
+  const newCardElement = createCard(newCardData, deleteCard, handleLikeButtonClick, handleImageClick);
   cardList.prepend(newCardElement);
   closeModal(newCardPopup);
 
@@ -111,5 +111,17 @@ function handleNewCardSubmit(evt) {
 }
 
 newCardPopup.addEventListener('submit', handleNewCardSubmit);
+
+export function handleImageClick(cardData) {
+  const popupImage = imagePopup.querySelector('.popup__image');
+  const popupTitle = imagePopup.querySelector('.popup__caption');
+
+  popupImage.src = cardData.link;
+  popupImage.alt = cardData.name;
+  popupTitle.textContent = cardData.name;
+
+  openModal(imagePopup);
+}
+
 
 

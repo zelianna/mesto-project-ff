@@ -1,7 +1,7 @@
-import { cardTemplate, cardList } from './index.js';
+import { cardTemplate, cardList, handleImageClick } from './index.js';
 
 // Функция создания карточки
-export function createCard(cardData, deleteCard, handleLikeButtonClick) {
+export function createCard(cardData, deleteCard, handleLikeButtonClick, handleImageClick) {
     const cardElement = cardTemplate.cloneNode(true);
   
     const deleteButton = cardElement.querySelector(".card__delete-button");
@@ -17,6 +17,7 @@ export function createCard(cardData, deleteCard, handleLikeButtonClick) {
       deleteCard(cardElement);
     });
     likeButton.addEventListener("click", handleLikeButtonClick);
+    cardImage.addEventListener("click", () => handleImageClick(cardData));
      
     return cardElement;
   }
