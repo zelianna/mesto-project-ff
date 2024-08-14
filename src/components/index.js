@@ -2,43 +2,20 @@ import '../pages/index.css';
 import { initialCards } from './cards';
 import avatar from '../images/avatar.jpg';
 import { openModal, closeModal } from './modal.js';
+import { createCard, deleteCard } from './card.js';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.style.backgroundImage = `url(${avatar})`;
 
-// @todo: Темплейт карточки
-const cardTemplate = document
+// Темплейт карточки
+export const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".card");
 
-// @todo: DOM узлы
-const cardList = document.querySelector(".places__list");
+// DOM узлы
+export const cardList = document.querySelector(".places__list");
 
-// @todo: Функция создания карточки
-function createCard(cardData, deleteCard) {
-  const cardElement = cardTemplate.cloneNode(true);
-
-  const deleteButton = cardElement.querySelector(".card__delete-button");
-  const cardImage = cardElement.querySelector(".card__image");
-  const cardTitle = cardElement.querySelector(".card__title");
-
-  cardImage.src = cardData.link;
-  cardImage.alt = cardData.name;
-  cardTitle.textContent = cardData.name;
-
-  deleteButton.addEventListener("click", () => {
-    deleteCard(cardElement);
-  });
-
-  return cardElement;
-}
-
-// @todo: Функция удаления карточки
-function deleteCard(cardElement) {
-  cardElement.remove();
-}
-
-// @todo: Вывести карточки на страницу
+// Вывести карточки на страницу
 initialCards.forEach((cardData) => {
   const cardElement = createCard(cardData, deleteCard);
   cardList.append(cardElement);
@@ -53,11 +30,14 @@ const closeButtons = document.querySelectorAll('.popup__close');
 
 const editProfilePopup = document.querySelector('.popup_type_edit');
 const newCardPopup = document.querySelector('.popup_type_new-card');
+const newCardForm = newCardPopup.querySelector('.popup__form');
 const imagePopup = document.querySelector('.popup_type_image');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_description');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
+const placeInput = document.querySelector('.popup__input_type_card-name');
+const linkInput = document.querySelector('.popup__input_type_url');
 
 /* function fillFormInputs({ nameInput, jobInput }, { nameValue, descriptionValue }) {
   nameInput.value = nameValue;
@@ -97,11 +77,9 @@ popups.forEach(popup => {
 function handleProfileSubmit(evt) {
   evt.preventDefault(); 
   
-  // Получаем значения из полей формы
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
 
-  // Обновляем текстовое содержимое этих элементов новыми значениями
   profileName.textContent = nameValue;
   profileJob.textContent = jobValue;
   closeModal(editProfilePopup);
@@ -113,5 +91,25 @@ editProfilePopup.addEventListener('submit', handleProfileSubmit);
   closeModal(editProfilePopup);
 });  */
 
+function handleNewCardSubmit(evt) {
+  evt.preventDefault();
+
+  const placeValue = placeInput.value;
+  const linkValue = linkInput.value;
+
+  const newCardData = {
+    name: placeValue,
+    link: linkValue
+  };
+
+  // Создаем карточку
+  const newCardElement = createCard(newCardData, deleteCard);
+  cardList.prepend(newCardElement);
+  closeModal(newCardPopup);
+
+  newCardForm.reset();
+}
+
+newCardPopup.addEventListener('submit', handleNewCardSubmit);
 
 
