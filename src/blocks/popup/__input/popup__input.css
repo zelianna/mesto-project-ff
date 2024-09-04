@@ -7,7 +7,7 @@
   line-height: 18px;
   box-sizing: border-box;
   padding: 10px 0 0;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 
 .popup__input:last-of-type {
@@ -18,8 +18,16 @@
   color: #FF0000;
   font-size: 12px;
   line-height: 14.52px;
-  margin-top: 5px;
+  margin-top: 0px;
   display: none;
+}
+
+.popup__input_type_error {
+  border-bottom-color: rgba(255, 0, 0, 1);
+}
+
+.popup__input-error_visible {
+  display: block;
 }
 
 .popup__input_invalid {

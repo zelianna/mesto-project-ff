@@ -44,10 +44,14 @@ const linkInput = document.querySelector(".popup__input_type_url");
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
+  resetValidation(editProfilePopup); // Сброс ошибок при открытии формы
+
   openModal(editProfilePopup);
 });
 
 addButton.addEventListener("click", () => {
+  resetValidation(newCardPopup); // Сброс ошибок при открытии формы
+
   openModal(newCardPopup);
 });
 
@@ -118,34 +122,36 @@ const validationConfig = {
   submitButtonSelector: '.popup__button',
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
+  errorClass: 'popup__input-error_visible' 
 }; 
 
 const showInputError = function(form, input, errorMessage) {
-  const error = form.querySelector(`.${input.id}__input-error`);
-  input.classList.add(validationConfig.inputErrorClass);
-  error.textContent = errorMessage;
-  error.classList.add(validationConfig.errorClass);
+  const errorElement = form.querySelector(`.${input.id}-error`);
+  input.classList.add(validationConfig.inputErrorClass); 
+  errorElement.textContent = errorMessage; // Отображение сообщения об ошибке
+  errorElement.classList.add(validationConfig.errorClass); // Показ сообщения об ошибке
 };
 
 const hideInputError = function(form, input) {
-  const error = form.querySelector(`.${input.id}__input-error`);
-  console.log(input);
-  input.classList.remove(validationConfig.inputErrorClass);
-  error.classList.remove(validationConfig.errorClass);
-  error.textContent = '';
+  const errorElement = form.querySelector(`.${input.id}-error`);
+  input.classList.remove(validationConfig.inputErrorClass); // Удаление класса выделения ошибочного поля
+  errorElement.classList.remove(validationConfig.errorClass); // Скрытие сообщения об ошибке
+  errorElement.textContent = ''; // Очистка текста ошибки
+
 };
 
 const isValid = function(form, input) {
   if (input.validity.patternMismatch) {
-    input.setCustomValidity(input.dataset.error);
+    input.setCustomValidity(input.dataset.error); // Используем кастомное сообщение об ошибке при несоответствии шаблону
   } else {
-    input.setCustomValidity('');
+    input.setCustomValidity(''); // Сбрасываем кастомное сообщение об ошибке
   }
+  
+
   if (!input.validity.valid) {
-    showInputError(form, input, input.validationMessage);
+    showInputError(form, input, input.validationMessage); // Показываем ошибку, если поле не валидно
   } else {
-    hideInputError(form, input);
+    hideInputError(form, input); // Скрываем ошибку, если поле валидно
   }
 };
 
@@ -155,18 +161,29 @@ const isValid = function(form, input) {
       return !input.validity.valid;
     })
   };
-  
 
-  // Функция для переключения состояния кнопки
-  const toggleButtonState = function(inputList, button) {
-    if (hasInvalidInput(inputList)) {
-      button.disabled = true;
-      button.classList.add('button__inactive');
-    } else {
-      button.disabled = false;
-      button.classList.remove('button__inactive');
-    }
-  };
+  // Функция переключения состояния кнопки отправки формы
+const toggleButtonState = function(inputList, button) {
+  if (hasInvalidInput(inputList)) {
+    button.disabled = true;
+    button.classList.add(validationConfig.inactiveButtonClass); // Добавляем класс для неактивной кнопки
+  } else {
+    button.disabled = false;
+    button.classList.remove(validationConfig.inactiveButtonClass); // Убираем класс для активной кнопки
+  }
+};
+
+const resetValidation = function(form) {
+  const inputList = Array.from(form.querySelectorAll(validationConfig.inputSelector));
+  inputList.forEach(input => {
+    hideInputError(form, input); // Очистка ошибок
+    input.setCustomValidity(''); // Сброс кастомных сообщений об ошибке
+  });
+
+  // Сброс состояния кнопки
+  const button = form.querySelector(validationConfig.submitButtonSelector);
+  toggleButtonState(inputList, button);
+};
   
 
     // Слушатели событий инпутов
@@ -192,8 +209,6 @@ const isValid = function(form, input) {
     };
     
     enableValidation();
-
-    
 
 
 

@@ -16,7 +16,12 @@
 
 .popup__button:disabled {
   background-color: #FFFFFF;
-  cursor: not-allowed;
+  color: #00000030;
+  pointer-events: none;
+  user-select: none;
+  border-radius: 2px;
+  border: 1px solid #00000030;
+
 }
 
 .popup__button:hover {
