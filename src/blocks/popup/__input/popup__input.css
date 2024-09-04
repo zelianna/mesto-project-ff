@@ -14,9 +14,24 @@
   margin-bottom: 0;
 }
 
+.popup__input-error {
+  color: #FF0000;
+  font-size: 12px;
+  line-height: 14.52px;
+  margin-top: 5px;
+  display: none;
+}
+
+.popup__input_invalid {
+  border-color: #FF0000;
+}
+
+
+
 @media screen and (max-width: 568px) {
   .popup__title {
     font-size: 12px;
     line-height: 15px;
   }
 }
+
