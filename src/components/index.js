@@ -101,6 +101,7 @@ function handleNewCardSubmit(evt) {
   cardList.prepend(newCardElement);
   closeModal(newCardPopup);
   newCardForm.reset();
+  resetValidation(newCardPopup); // Сброс состояния кнопки при повторном открытии формы
 }
 
 newCardPopup.addEventListener("submit", handleNewCardSubmit);
