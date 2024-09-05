@@ -44,13 +44,13 @@ const linkInput = document.querySelector(".popup__input_type_url");
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
-  resetValidation(editProfilePopup); // Сброс ошибок при открытии формы
+  clearValidation(editProfilePopup, validationConfig); // Сброс ошибок при открытии формы
 
   openModal(editProfilePopup);
 });
 
 addButton.addEventListener("click", () => {
-  resetValidation(newCardPopup); // Сброс ошибок при открытии формы
+  clearValidation(newCardPopup, validationConfig); // Сброс ошибок при открытии формы
 
   openModal(newCardPopup);
 });
@@ -101,7 +101,7 @@ function handleNewCardSubmit(evt) {
   cardList.prepend(newCardElement);
   closeModal(newCardPopup);
   newCardForm.reset();
-  resetValidation(newCardPopup); // Сброс состояния кнопки при повторном открытии формы
+  clearValidation(newCardPopup, validationConfig); // Сброс состояния кнопки при повторном открытии формы
 }
 
 newCardPopup.addEventListener("submit", handleNewCardSubmit);
@@ -174,18 +174,19 @@ const toggleButtonState = function(inputList, button) {
   }
 };
 
-const resetValidation = function(form) {
-  const inputList = Array.from(form.querySelectorAll(validationConfig.inputSelector));
+const clearValidation = function(form, config) {
+  const inputList = Array.from(form.querySelectorAll(config.inputSelector));
   inputList.forEach(input => {
     hideInputError(form, input); // Очистка ошибок
-    input.setCustomValidity(''); // Сброс кастомных сообщений об ошибке
   });
 
   // Сброс состояния кнопки
-  const button = form.querySelector(validationConfig.submitButtonSelector);
-  toggleButtonState(inputList, button);
+  const button = form.querySelector(config.submitButtonSelector);
+  toggleButtonState(inputList, button); // Деактивация кнопки
 };
   
+
+
 
     // Слушатели событий инпутов
   
@@ -210,8 +211,3 @@ const resetValidation = function(form) {
     };
     
     enableValidation();
-
-
-
-
-
