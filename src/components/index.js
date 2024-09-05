@@ -4,6 +4,7 @@ import avatar from "../images/avatar.jpg";
 import { openModal, closeModal } from "./modal.js";
 import { createCard, deleteCard, handleLikeButtonClick } from "./card.js";
 import { clearValidation, enableValidation } from "./validation.js";
+import { fetchUserData } from './api.js';
 
 const profileImage = document.querySelector(".profile__image");
 profileImage.style.backgroundImage = `url(${avatar})`;
@@ -128,3 +129,19 @@ const validationConfig = {
 };
 
 enableValidation(validationConfig);
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetchUserData()
+  .then((userData) => {
+      // Вывод данных в консоль
+      console.log('Полученные данные пользователя:', userData);
+
+/*       // Обновите элементы шапки страницы, если это нужно
+      document.querySelector('.header__name').textContent = userData.name;
+      document.querySelector('.header__about').textContent = userData.about;
+      document.querySelector('.header__avatar').src = userData.avatar; */
+  })
+  .catch((error) => {
+      console.error('Не удалось получить данные пользователя:', error);
+  });
+});
