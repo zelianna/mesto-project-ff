@@ -3,6 +3,7 @@ import { initialCards } from "./cards";
 import avatar from "../images/avatar.jpg";
 import { openModal, closeModal } from "./modal.js";
 import { createCard, deleteCard, handleLikeButtonClick } from "./card.js";
+import { clearValidation, enableValidation } from "./validation.js";
 
 const profileImage = document.querySelector(".profile__image");
 profileImage.style.backgroundImage = `url(${avatar})`;
@@ -118,96 +119,12 @@ export function handleImageClick(cardData) {
 }
 
 const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_disabled',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_visible' 
-}; 
-
-const showInputError = function(form, input, errorMessage) {
-  const errorElement = form.querySelector(`.${input.id}-error`);
-  input.classList.add(validationConfig.inputErrorClass); 
-  errorElement.textContent = errorMessage; // Отображение сообщения об ошибке
-  errorElement.classList.add(validationConfig.errorClass); // Показ сообщения об ошибке
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__input-error_visible",
 };
 
-const hideInputError = function(form, input) {
-  const errorElement = form.querySelector(`.${input.id}-error`);
-  input.classList.remove(validationConfig.inputErrorClass); // Удаление класса выделения ошибочного поля
-  errorElement.classList.remove(validationConfig.errorClass); // Скрытие сообщения об ошибке
-  errorElement.textContent = ''; // Очистка текста ошибки
-
-};
-
-const isValid = function(form, input) {
-  if (input.validity.patternMismatch) {
-    input.setCustomValidity(input.dataset.error); // Используем кастомное сообщение об ошибке при несоответствии шаблону
-  } else {
-    input.setCustomValidity(''); // Сбрасываем кастомное сообщение об ошибке
-  }
-  
-
-  if (!input.validity.valid) {
-    showInputError(form, input, input.validationMessage); // Показываем ошибку, если поле не валидно
-  } else {
-    hideInputError(form, input); // Скрываем ошибку, если поле валидно
-  }
-};
-
-  // Функция для проверки наличия невалидных полей
-  const hasInvalidInput = function(inputList) {
-    return inputList.some(function(input) {
-      return !input.validity.valid;
-    })
-  };
-
-  // Функция переключения состояния кнопки отправки формы
-const toggleButtonState = function(inputList, button) {
-  if (hasInvalidInput(inputList)) {
-    button.disabled = true;
-    button.classList.add(validationConfig.inactiveButtonClass); // Добавляем класс для неактивной кнопки
-  } else {
-    button.disabled = false;
-    button.classList.remove(validationConfig.inactiveButtonClass); // Убираем класс для активной кнопки
-  }
-};
-
-const clearValidation = function(form, config) {
-  const inputList = Array.from(form.querySelectorAll(config.inputSelector));
-  inputList.forEach(input => {
-    hideInputError(form, input); // Очистка ошибок
-  });
-
-  // Сброс состояния кнопки
-  const button = form.querySelector(config.submitButtonSelector);
-  toggleButtonState(inputList, button); // Деактивация кнопки
-};
-  
-
-
-
-    // Слушатели событий инпутов
-  
-    const setEventListeners = function(form) {
-      const inputList = Array.from(form.querySelectorAll(validationConfig.inputSelector));
-      const button = form.querySelector(validationConfig.submitButtonSelector);
-      toggleButtonState(inputList, button);
-      inputList.forEach(function(input) {
-        input.addEventListener('input', function() {
-          isValid(form, input);
-          toggleButtonState(inputList, button);
-        });
-      });
-    };
-    
-    
-    const enableValidation = function() {
-      const formList = Array.from(document.querySelectorAll(validationConfig.formSelector));
-      formList.forEach(function(form) {
-        setEventListeners(form);
-      });
-    };
-    
-    enableValidation();
+enableValidation(validationConfig);
