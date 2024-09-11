@@ -73,3 +73,28 @@ export const updateUserData = (name, about) => {
     });
   };
   
+  // Функция для добавления новой карточки на сервер
+export const addCard = (name, link) => {
+    return fetch(`${configAPI.baseUrl}/cards`, {
+      method: 'POST',
+      headers: configAPI.headers,
+      body: JSON.stringify({
+        name: name,
+        link: link
+      })
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Ошибка: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((newCardData) => {
+      return newCardData; // Возвращаем объект новой карточки
+    })
+    .catch((error) => {
+      console.error('Ошибка при добавлении карточки:', error);
+      throw error;
+    });
+  };
+  

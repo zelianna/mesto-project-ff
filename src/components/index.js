@@ -3,7 +3,7 @@ import avatar from "../images/avatar.jpg";
 import { openModal, closeModal } from "./modal.js";
 import { createCard, deleteCard, handleLikeButtonClick } from "./card.js";
 import { clearValidation, enableValidation } from "./validation.js";
-import { fetchUserData, fetchCardsData, updateUserData } from './api.js';
+import { fetchUserData, fetchCardsData, updateUserData, addCard } from './api.js';
 
 const profileImage = document.querySelector(".profile__image");
 profileImage.style.backgroundImage = `url(${avatar})`;
@@ -86,23 +86,27 @@ function handleNewCardSubmit(evt) {
   evt.preventDefault();
   const placeValue = placeInput.value;
   const linkValue = linkInput.value;
-  const newCardData = {
-    name: placeValue,
-    link: linkValue,
-  };
 
-  // Создаем карточку
-  const newCardElement = createCard(
-    newCardData,
-    deleteCard,
-    handleLikeButtonClick,
-    handleImageClick
-  );
-  cardList.prepend(newCardElement);
-  closeModal(newCardPopup);
-  newCardForm.reset();
-  clearValidation(newCardPopup, validationConfig); // Сброс состояния кнопки при повторном открытии формы
+  // Отправляем POST-запрос на сервер для добавления новой карточки
+  addCard(placeValue, linkValue)
+    .then((newCardData) => {
+      // После успешного добавления создаем карточку и добавляем на страницу
+      const newCardElement = createCard(
+        newCardData,
+        deleteCard,
+        handleLikeButtonClick,
+        handleImageClick
+      );
+      cardList.prepend(newCardElement);
+      closeModal(newCardPopup);
+      newCardForm.reset();
+      clearValidation(newCardPopup, validationConfig); // Сброс состояния кнопки при повторном открытии формы
+    })
+    .catch((error) => {
+      console.error('Ошибка при добавлении новой карточки:', error);
+    });
 }
+
 
 newCardPopup.addEventListener("submit", handleNewCardSubmit);
 
@@ -139,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Используем данные пользователя (например, для аватара, имени и т.д.)
       profileName.textContent = userData.name;
       profileJob.textContent = userData.about;
-      profileImage.style.backgroundImage = `url(${userData.avatar})`;
+      //profileImage.style.backgroundImage = `url(${userData.avatar})`;
 
       // Рендерим карточки
       cardsData.forEach((cardData) => {
