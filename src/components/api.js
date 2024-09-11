@@ -6,7 +6,7 @@ const configAPI = {
     }
   }
 
-// Функция для выполнения GET-запроса
+// Функция для выполнения GET-запроса данных пользователя
 export const fetchUserData = () => {
     return fetch(`${configAPI.baseUrl}/users/me`, {
         method: 'GET',
@@ -27,3 +27,49 @@ export const fetchUserData = () => {
     });
 };
 
+// Функция для выполнения GET-запроса карточек
+export const fetchCardsData = () => {
+    return fetch(`${configAPI.baseUrl}/cards`, {
+      method: 'GET',
+      headers: configAPI.headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Ошибка: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((cardsData) => {
+        return cardsData; // Возвращаем массив карточек
+      })
+      .catch((error) => {
+        console.error('Ошибка при загрузке карточек:', error);
+        throw error;
+      });
+  };
+  
+  // Функция для обновления данных пользователя
+export const updateUserData = (name, about) => {
+    return fetch(`${configAPI.baseUrl}/users/me`, {
+      method: 'PATCH',
+      headers: configAPI.headers,
+      body: JSON.stringify({
+        name: name,
+        about: about
+      })
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Ошибка: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((updatedUserData) => {
+      return updatedUserData; // Возвращаем обновленные данные пользователя
+    })
+    .catch((error) => {
+      console.error('Ошибка при обновлении данных пользователя:', error);
+      throw error;
+    });
+  };
+  

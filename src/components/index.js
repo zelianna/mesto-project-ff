@@ -1,10 +1,9 @@
 import "../pages/index.css";
-import { initialCards } from "./cards";
 import avatar from "../images/avatar.jpg";
 import { openModal, closeModal } from "./modal.js";
 import { createCard, deleteCard, handleLikeButtonClick } from "./card.js";
 import { clearValidation, enableValidation } from "./validation.js";
-import { fetchUserData } from './api.js';
+import { fetchUserData, fetchCardsData, updateUserData } from './api.js';
 
 const profileImage = document.querySelector(".profile__image");
 profileImage.style.backgroundImage = `url(${avatar})`;
@@ -16,17 +15,6 @@ export const cardTemplate = document
 
 // DOM узлы
 export const cardList = document.querySelector(".places__list");
-
-// Вывести карточки на страницу
-initialCards.forEach((cardData) => {
-  const cardElement = createCard(
-    cardData,
-    deleteCard,
-    handleLikeButtonClick,
-    handleImageClick
-  );
-  cardList.append(cardElement);
-});
 
 const popups = document.querySelectorAll(".popup");
 const editButton = document.querySelector(".profile__edit-button");
@@ -77,10 +65,20 @@ function handleProfileSubmit(evt) {
   evt.preventDefault();
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
-  profileName.textContent = nameValue;
-  profileJob.textContent = jobValue;
-  closeModal(editProfilePopup);
+
+  // Отправляем PATCH-запрос на сервер для обновления данных пользователя
+  updateUserData(nameValue, jobValue)
+    .then((updatedUserData) => {
+      // Обновляем данные на странице после успешного обновления на сервере
+      profileName.textContent = updatedUserData.name;
+      profileJob.textContent = updatedUserData.about;
+      closeModal(editProfilePopup);
+    })
+    .catch((error) => {
+      console.error('Ошибка при обновлении профиля:', error);
+    });
 }
+
 
 editProfilePopup.addEventListener("submit", handleProfileSubmit);
 
@@ -130,18 +128,32 @@ const validationConfig = {
 
 enableValidation(validationConfig);
 
-document.addEventListener('DOMContentLoaded', () => {
-  fetchUserData()
-  .then((userData) => {
-      // Вывод данных в консоль
-      console.log('Полученные данные пользователя:', userData);
 
-/*       // Обновите элементы шапки страницы, если это нужно
-      document.querySelector('.header__name').textContent = userData.name;
-      document.querySelector('.header__about').textContent = userData.about;
-      document.querySelector('.header__avatar').src = userData.avatar; */
-  })
-  .catch((error) => {
-      console.error('Не удалось получить данные пользователя:', error);
-  });
+// Обрабатываем Promise.all для запроса данных пользователя и карточек
+document.addEventListener('DOMContentLoaded', () => {
+  Promise.all([fetchUserData(), fetchCardsData()])
+    .then(([userData, cardsData]) => {
+      console.log('Данные пользователя:', userData);
+      console.log('Данные карточек:', cardsData); 
+
+      // Используем данные пользователя (например, для аватара, имени и т.д.)
+      profileName.textContent = userData.name;
+      profileJob.textContent = userData.about;
+      profileImage.style.backgroundImage = `url(${userData.avatar})`;
+
+      // Рендерим карточки
+      cardsData.forEach((cardData) => {
+        console.log('Карточка:', cardData); // Выводим каждую карточку в консоль
+        const cardElement = createCard(
+          cardData,
+          deleteCard,
+          handleLikeButtonClick,
+          handleImageClick
+        );
+        cardList.append(cardElement);
+      });
+    })
+    .catch((error) => {
+      console.error('Ошибка при загрузке данных:', error);
+    });
 });
