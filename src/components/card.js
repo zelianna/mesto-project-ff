@@ -13,10 +13,15 @@ export function createCard(
   const likeButton = cardElement.querySelector(".card__like-button");
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
+  const cardLikeCount = cardElement.querySelector(".card__like-count");
+
 
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
+
+  // Устанавливаем количество лайков
+  cardLikeCount.textContent = cardData.likes.length;
 
   deleteButton.addEventListener("click", () => {
     deleteCard(cardElement);
