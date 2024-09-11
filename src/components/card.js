@@ -25,16 +25,17 @@ export function createCard(
   // Устанавливаем количество лайков
   cardLikeCount.textContent = cardData.likes.length;
 
-/*   // для отладки
+  // для отладки
   console.log("Card owner ID:", cardData.owner._id);
   console.log("Current user ID:", currentUser._id);
- */
+ 
 
   // Проверяем, является ли текущий пользователь владельцем карточки
   if (cardData.owner._id !== currentUser._id) {  
     deleteButton.remove(); // Удаляем кнопку, если карточка не принадлежит пользователю
   } else {
     deleteButton.addEventListener("click", () => {
+      console.log("cardData._id:", cardData._id);
       deleteCard(cardData._id, cardElement); // Передаем _id карточки для удаления с сервера
     });
   }
@@ -55,8 +56,7 @@ export function deleteCard(cardId, cardElement) {
   deleteCardFromServer(cardId)
     .then(() => {
       cardElement.remove(); // Удаляем карточку из DOM после успешного удаления с сервера
-      cardToDelete = null; // Сбрасываем переменные
-      cardIdToDelete = null;
+      
     })
     .catch((error) => {
       console.error('Ошибка при удалении карточки:', error);

@@ -98,7 +98,7 @@ export const addCard = (name, link) => {
     });
   };
   
-// Функция удаления карточки с сервера
+ // Функция удаления карточки с сервера
 export function deleteCardFromServer(cardId) {
     return fetch(`${configAPI.baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
@@ -110,6 +110,6 @@ export function deleteCardFromServer(cardId) {
       }
       return Promise.reject(`Ошибка: ${response.status}`);
     });
-  }
+  } 
   
   

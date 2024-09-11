@@ -4,7 +4,8 @@ import { openModal, closeModal } from "./modal.js";
 import { createCard, deleteCard, handleLikeButtonClick } from "./card.js";
 import { clearValidation, enableValidation } from "./validation.js";
 import { fetchUserData, fetchCardsData, updateUserData, addCard } from './api.js';
-let userData; 
+
+let currentUser;  
 const profileImage = document.querySelector(".profile__image");
 profileImage.style.backgroundImage = `url(${avatar})`;
 
@@ -93,7 +94,7 @@ function handleNewCardSubmit(evt) {
       // После успешного добавления создаем карточку и добавляем на страницу
       const newCardElement = createCard(
         newCardData,
-        userData,
+        currentUser, 
         deleteCard,
         handleLikeButtonClick,
         handleImageClick
@@ -138,7 +139,7 @@ enableValidation(validationConfig);
 document.addEventListener('DOMContentLoaded', () => {
   Promise.all([fetchUserData(), fetchCardsData()])
     .then(([userData, cardsData]) => {
-
+      currentUser = userData;
       // Используем данные пользователя (например, для аватара, имени и т.д.)
       profileName.textContent = userData.name;
       profileJob.textContent = userData.about;
