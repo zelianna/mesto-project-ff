@@ -98,3 +98,18 @@ export const addCard = (name, link) => {
     });
   };
   
+// Функция удаления карточки с сервера
+export function deleteCardFromServer(cardId) {
+    return fetch(`${configAPI.baseUrl}/cards/${cardId}`, {
+      method: 'DELETE',
+      headers: configAPI.headers,
+    })    
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(`Ошибка: ${response.status}`);
+    });
+  }
+  
+  
