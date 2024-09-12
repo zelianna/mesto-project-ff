@@ -3,7 +3,7 @@ import avatar from "../images/avatar.jpg";
 import { openModal, closeModal } from "./modal.js";
 import { createCard, deleteCard, handleLikeButtonClick } from "./card.js";
 import { clearValidation, enableValidation } from "./validation.js";
-import { fetchUserData, fetchCardsData, updateUserData, addCard } from './api.js';
+import { fetchUserData, fetchCardsData, updateUserData, addCard, updateAvatar } from './api.js';
 
 let currentUser;  
 const profileImage = document.querySelector(".profile__image");
@@ -22,6 +22,11 @@ const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const closeButtons = document.querySelectorAll(".popup__close");
 const editProfilePopup = document.querySelector(".popup_type_edit");
+
+const editProfileAvatar = document.querySelector(".popup_type_avatar");
+const profileAvatar = document.querySelector(".profile__image");
+const avatarForm = document.forms.avatar;
+
 const newCardPopup = document.querySelector(".popup_type_new-card");
 const newCardForm = newCardPopup.querySelector(".popup__form");
 const imagePopup = document.querySelector(".popup_type_image");
@@ -31,6 +36,25 @@ const profileName = document.querySelector(".profile__title");
 const profileJob = document.querySelector(".profile__description");
 const placeInput = document.querySelector(".popup__input_type_card-name");
 const linkInput = document.querySelector(".popup__input_type_url");
+
+profileAvatar.addEventListener("click", () => {
+  clearValidation(editProfileAvatar, validationConfig); // Сброс ошибок при открытии формы
+  openModal(editProfileAvatar);
+});
+
+// Обработчик для формы обновления аватара
+avatarForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const avatarInput = document.getElementById('avatar-link').value;
+
+  if (avatarInput) {
+    // Если URL валиден, вызываем функцию обновления аватара
+    updateAvatar(avatarInput);
+  } else {
+    console.log('Введите корректную ссылку на аватар.');
+  }
+});
+
 
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;

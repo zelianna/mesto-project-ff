@@ -139,3 +139,28 @@ export function removeLike(cardId) {
       return response.json(); // Возвращаем обновленные данные карточки
     });
 }  
+
+// Функция для отправки PATCH-запроса для обновления аватара
+export function updateAvatar(avatarUrl) {
+  fetch(`${configAPI.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: configAPI.headers,
+    body: JSON.stringify({
+      avatar: avatarUrl
+    })
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json(); 
+    }
+    return Promise.reject(`Ошибка: ${response.status}`);
+  })
+  .then(data => {
+    console.log('Аватар успешно обновлён:', data);
+    const profileImage = document.querySelector('.profile__image');
+    profileImage.style.backgroundImage = `url(${avatarUrl})`; // Обновляем аватар на странице
+  })
+  .catch(error => {
+    console.error('Ошибка при обновлении аватара:', error);
+  });
+}

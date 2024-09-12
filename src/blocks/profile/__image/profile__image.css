@@ -7,6 +7,27 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  
+  position: relative;
+  cursor: pointer;
+}
+
+/* Псевдоэлемент для иконки редактирования */
+.profile__image::before {
+  content: url('../../../images/edit-icon.svg');
+  position: absolute;
+  top: 55px;
+  left: 55px;
+  width: 26px;
+  height: 26px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1
+}
+
+/* Появление иконки при наведении */
+.profile__image:hover::before {
+  opacity: 1;
 }
 
 @media screen and (max-width: 740px) {
