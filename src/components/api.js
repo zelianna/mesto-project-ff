@@ -112,4 +112,30 @@ export function deleteCardFromServer(cardId) {
     });
   } 
   
-  
+// Функция для отправки PUT-запроса на добавление лайка
+export function addLike(cardId) {
+  return fetch(`${configAPI.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: configAPI.headers,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Ошибка: ${response.status}`);
+      }
+      return response.json(); // Возвращаем обновленные данные карточки
+    });
+}
+
+// Функция для отправки DELETE-запроса на снятие лайка
+export function removeLike(cardId) {
+  return fetch(`${configAPI.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: configAPI.headers,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Ошибка: ${response.status}`);
+      }
+      return response.json(); // Возвращаем обновленные данные карточки
+    });
+}  
