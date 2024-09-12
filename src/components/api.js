@@ -1,3 +1,5 @@
+import { avatarForm, renderLoading } from "./index.js";
+
 const configAPI = {
     baseUrl: 'https://nomoreparties.co/v1/wff-cohort-22',
     headers: {
@@ -142,6 +144,12 @@ export function removeLike(cardId) {
 
 // Функция для отправки PATCH-запроса для обновления аватара
 export function updateAvatar(avatarUrl) {
+  
+  const submitButton = avatarForm.querySelector('.popup__button');
+
+  // Сохранить...
+  renderLoading(true, submitButton);
+
   fetch(`${configAPI.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: configAPI.headers,
@@ -162,5 +170,10 @@ export function updateAvatar(avatarUrl) {
   })
   .catch(error => {
     console.error('Ошибка при обновлении аватара:', error);
+  })
+  .finally(() => {
+    // Возвращаем текст кнопки
+    renderLoading(false, submitButton);
   });
+
 }

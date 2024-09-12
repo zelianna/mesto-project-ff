@@ -25,7 +25,7 @@ const editProfilePopup = document.querySelector(".popup_type_edit");
 
 const editProfileAvatar = document.querySelector(".popup_type_avatar");
 const profileAvatar = document.querySelector(".profile__image");
-const avatarForm = document.forms.avatar;
+export const avatarForm = document.forms.avatar;
 
 const newCardPopup = document.querySelector(".popup_type_new-card");
 const newCardForm = newCardPopup.querySelector(".popup__form");
@@ -185,3 +185,18 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Ошибка при загрузке данных:', error);
     });
 });
+
+// Функция для изменения текста кнопки во время загрузки
+export function renderLoading(isLoading, submitButton, loadingText = 'Сохранение...') {
+  if (isLoading) {
+    // Сохраняем исходный текст кнопки, если его еще нет
+    if (!submitButton.dataset.initialText) {
+      submitButton.dataset.initialText = submitButton.textContent;
+    }
+    // Меняем текст кнопки 
+    submitButton.textContent = loadingText;
+  } else {
+    // Возвращаем исходный текст кнопки
+    submitButton.textContent = submitButton.dataset.initialText;
+  }
+}
