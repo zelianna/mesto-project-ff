@@ -57,7 +57,7 @@ avatarForm.addEventListener("submit", function (event) {
       .then((data) => {
         // Обновляем аватар на странице только при успешном ответе сервера
         profileAvatar.style.backgroundImage = `url(${data.avatar})`;
-        closeModal(editProfileAvatar); 
+        closeModal(editProfileAvatar);
       })
       .catch((error) => {
         console.error("Ошибка при обновлении аватара:", error);
@@ -70,7 +70,6 @@ avatarForm.addEventListener("submit", function (event) {
     console.log("Введите корректную ссылку на аватар.");
   }
 });
-
 
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
@@ -101,7 +100,6 @@ popups.forEach((popup) => {
     }
   });
 });
-
 
 function handleProfileSubmit(evt) {
   evt.preventDefault();
@@ -134,9 +132,9 @@ function handleNewCardSubmit(evt) {
   evt.preventDefault();
   const placeValue = placeInput.value;
   const linkValue = linkInput.value;
-  
+
   const submitButton = newCardForm.querySelector(".popup__button");
-  renderLoading(true, submitButton);  // Показываем "Сохранение..."
+  renderLoading(true, submitButton); // Показываем "Сохранение..."
 
   // Отправляем запрос на добавление карточки
   addCard(placeValue, linkValue)
@@ -158,11 +156,11 @@ function handleNewCardSubmit(evt) {
       console.error("Ошибка при добавлении карточки:", error);
     })
     .finally(() => {
-      renderLoading(false, submitButton);  // Возвращаем начальный текст кнопки
+      renderLoading(false, submitButton); // Возвращаем начальный текст кнопки
     });
 }
 
-newCardPopup.addEventListener('submit', handleNewCardSubmit);
+newCardPopup.addEventListener("submit", handleNewCardSubmit);
 
 function handleImageClick(cardData) {
   const popupImage = imagePopup.querySelector(".popup__image");
@@ -214,11 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Функция для изменения текста кнопки во время загрузки
-function renderLoading(
-  isLoading,
-  submitButton,
-  loadingText = "Сохранение..."
-) {
+function renderLoading(isLoading, submitButton, loadingText = "Сохранение...") {
   if (isLoading) {
     // Сохраняем исходный текст кнопки
     if (!submitButton.dataset.initialText) {

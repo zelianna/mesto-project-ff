@@ -1,4 +1,3 @@
-
 const configAPI = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-22",
   headers: {
@@ -13,18 +12,9 @@ export const fetchUserData = () => {
     method: "GET",
     headers: configAPI.headers,
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Ошибка: ${response.status}`);
-      }
-      return response.json();
-    })
+    .then(checkResponse)
     .then((userData) => {
       return userData;
-    })
-    .catch((error) => {
-      console.error("Ошибка при загрузке данных пользователя:", error);
-      throw error;
     });
 };
 
@@ -34,18 +24,9 @@ export const fetchCardsData = () => {
     method: "GET",
     headers: configAPI.headers,
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Ошибка: ${response.status}`);
-      }
-      return response.json();
-    })
+    .then(checkResponse)
     .then((cardsData) => {
       return cardsData; // Возвращаем массив карточек
-    })
-    .catch((error) => {
-      console.error("Ошибка при загрузке карточек:", error);
-      throw error;
     });
 };
 
@@ -58,17 +39,7 @@ export const updateUserData = (name, about) => {
       name: name,
       about: about,
     }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Ошибка: ${response.status}`);
-      }
-      return response.json();
-    })
-    .catch((error) => {
-      console.error("Ошибка при обновлении данных пользователя:", error);
-      throw error;
-    });
+  }).then(checkResponse);
 };
 
 // Функция для добавления новой карточки
@@ -81,18 +52,9 @@ export const addCard = (name, link) => {
       link: link,
     }),
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Ошибка: ${response.status}`);
-      }
-      return response.json();
-    })
+    .then(checkResponse)
     .then((newCardData) => {
       return newCardData; // Возвращаем объект новой карточки
-    })
-    .catch((error) => {
-      console.error("Ошибка при добавлении карточки:", error);
-      throw error;
     });
 };
 
@@ -101,12 +63,7 @@ export function deleteCardFromServer(cardId) {
   return fetch(`${configAPI.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: configAPI.headers,
-  }).then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
-    return Promise.reject(`Ошибка: ${response.status}`);
-  });
+  }).then(checkResponse);
 }
 
 // Функция для отправки PUT-запроса на добавление лайка
@@ -114,12 +71,7 @@ export function addLike(cardId) {
   return fetch(`${configAPI.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: configAPI.headers,
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error(`Ошибка: ${response.status}`);
-    }
-    return response.json(); // Возвращаем обновленные данные карточки
-  });
+  }).then(checkResponse);
 }
 
 // Функция для отправки DELETE-запроса на снятие лайка
@@ -127,12 +79,7 @@ export function removeLike(cardId) {
   return fetch(`${configAPI.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: configAPI.headers,
-  }).then((response) => {
-    if (!response.ok) {
-      throw new Error(`Ошибка: ${response.status}`);
-    }
-    return response.json();
-  });
+  }).then(checkResponse);
 }
 
 // Функция для отправки PATCH-запроса для обновления аватара
@@ -143,13 +90,12 @@ export function updateAvatar(avatarUrl) {
     body: JSON.stringify({
       avatar: avatarUrl,
     }),
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return Promise.reject(`Ошибка: ${response.status}`);
-    });
+  }).then(checkResponse);
 }
 
-
+function checkResponse(response) {
+  if (response.ok) {
+    return response.json();
+  }
+  return Promise.reject(`Ошибка ${response.status}`);
+}
