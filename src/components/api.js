@@ -1,8 +1,7 @@
 import {
   avatarForm,
   renderLoading,
-  newCardForm,
-  editProfileForm,
+  newCardForm
 } from "./index.js";
 
 const configAPI = {
@@ -57,6 +56,7 @@ export const fetchCardsData = () => {
 
 // Функция для обновления данных пользователя
 export const updateUserData = (name, about) => {
+  const editProfileForm = document.forms["edit-profile"];
   const submitButton = editProfileForm.querySelector(".popup__button");
   // Сохранить...
   renderLoading(true, submitButton);

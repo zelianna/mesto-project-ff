@@ -14,10 +14,12 @@
 
 /* Псевдоэлемент для иконки редактирования */
 .profile__image::before {
-  content: url('../../../images/edit-icon.svg');
+  content: ''; 
+  background-image: url('../../../images/edit-icon.svg');
+  background-size: contain;
   position: absolute;
-  top: 55px;
-  left: 55px;
+  top: 47px;
+  left: 47px;
   width: 26px;
   height: 26px;
   opacity: 0;

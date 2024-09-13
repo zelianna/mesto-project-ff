@@ -15,20 +15,14 @@ let currentUser;
 const profileImage = document.querySelector(".profile__image");
 profileImage.style.backgroundImage = `url(${avatar})`;
 
-// Темплейт карточки
-export const cardTemplate = document
-  .querySelector("#card-template")
-  .content.querySelector(".card");
-
 // DOM узлы
-export const cardList = document.querySelector(".places__list");
+const cardList = document.querySelector(".places__list");
 
 const popups = document.querySelectorAll(".popup");
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const closeButtons = document.querySelectorAll(".popup__close");
 const editProfilePopup = document.querySelector(".popup_type_edit");
-export const editProfileForm = document.forms["edit-profile"];
 
 const editProfileAvatar = document.querySelector(".popup_type_avatar");
 const profileAvatar = document.querySelector(".profile__image");

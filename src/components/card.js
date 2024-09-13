@@ -1,4 +1,4 @@
-import { cardTemplate, cardList, handleImageClick } from "./index.js";
+
 import { deleteCardFromServer, addLike, removeLike } from "./api.js";
 
 // Функция создания карточки
@@ -9,6 +9,7 @@ export function createCard(
   handleLikeButtonClick,
   handleImageClick
 ) {
+  const cardTemplate = document.querySelector("#card-template").content.querySelector(".card");
   const cardElement = cardTemplate.cloneNode(true);
 
   const deleteButton = cardElement.querySelector(".card__delete-button");
@@ -16,6 +17,7 @@ export function createCard(
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
   const cardLikeCount = cardElement.querySelector(".card__like-count");
+  
 
   if (cardData.likes.some((l) => l._id === currentUser._id)) {
     likeButton.classList.add("card__like-button_is-active");
@@ -40,9 +42,10 @@ export function createCard(
     });
   }
 
-  likeButton.addEventListener("click", (event) =>
-    handleLikeButtonClick(event, cardData, currentUser)
+  likeButton.addEventListener("click", () =>
+    handleLikeButtonClick(cardData, likeButton, cardLikeCount)
   );
+
   cardImage.addEventListener("click", () => handleImageClick(cardData));
 
   return cardElement;
@@ -60,13 +63,10 @@ export function deleteCard(cardId, cardElement) {
 }
 
 // Функция обработчика лайка
-export function handleLikeButtonClick(event, cardData, currentUser) {
-  const likeButton = event.target;
+export function handleLikeButtonClick(cardData, likeButton, likeCountElement) {
+
   const isLiked = likeButton.classList.contains("card__like-button_is-active");
   const cardId = cardData._id; // _id карточки
-  const likeCountElement = likeButton
-    .closest(".card")
-    .querySelector(".card__like-count");
 
   // Определяем, ставим лайк или убираем
   if (isLiked) {
