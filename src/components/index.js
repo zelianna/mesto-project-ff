@@ -22,20 +22,21 @@ const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
 const closeButtons = document.querySelectorAll(".popup__close");
 const editProfilePopup = document.querySelector(".popup_type_edit");
+export const editProfileForm = document.forms['edit-profile'];
 
 const editProfileAvatar = document.querySelector(".popup_type_avatar");
 const profileAvatar = document.querySelector(".profile__image");
 export const avatarForm = document.forms.avatar;
 
 const newCardPopup = document.querySelector(".popup_type_new-card");
-const newCardForm = newCardPopup.querySelector(".popup__form");
+export const newCardForm = newCardPopup.querySelector(".popup__form");
 const imagePopup = document.querySelector(".popup_type_image");
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
 const profileName = document.querySelector(".profile__title");
 const profileJob = document.querySelector(".profile__description");
 const placeInput = document.querySelector(".popup__input_type_card-name");
-const linkInput = document.querySelector(".popup__input_type_url");
+const linkInput = document.querySelector("#link");
 
 profileAvatar.addEventListener("click", () => {
   clearValidation(editProfileAvatar, validationConfig); // Сброс ошибок при открытии формы
@@ -167,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Используем данные пользователя (например, для аватара, имени и т.д.)
       profileName.textContent = userData.name;
       profileJob.textContent = userData.about;
-      //profileImage.style.backgroundImage = `url(${userData.avatar})`;
+      profileImage.style.backgroundImage = `url(${userData.avatar})`;
 
       // Рендерим карточки
       cardsData.forEach((cardData) => {

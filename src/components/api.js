@@ -1,4 +1,4 @@
-import { avatarForm, renderLoading } from "./index.js";
+import { avatarForm, renderLoading, newCardForm, editProfileForm } from "./index.js";
 
 const configAPI = {
     baseUrl: 'https://nomoreparties.co/v1/wff-cohort-22',
@@ -52,6 +52,10 @@ export const fetchCardsData = () => {
   
   // Функция для обновления данных пользователя
 export const updateUserData = (name, about) => {
+    const submitButton = editProfileForm.querySelector('.popup__button');
+    // Сохранить...
+    renderLoading(true, submitButton);
+
     return fetch(`${configAPI.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: configAPI.headers,
@@ -72,11 +76,19 @@ export const updateUserData = (name, about) => {
     .catch((error) => {
       console.error('Ошибка при обновлении данных пользователя:', error);
       throw error;
+    })
+    .finally(() => {
+      // Возвращаем текст кнопки
+      renderLoading(false, submitButton);
     });
   };
   
   // Функция для добавления новой карточки на сервер
 export const addCard = (name, link) => {
+    const submitButton = newCardForm.querySelector('.popup__button');
+    // Сохранить...
+    renderLoading(true, submitButton);
+
     return fetch(`${configAPI.baseUrl}/cards`, {
       method: 'POST',
       headers: configAPI.headers,
@@ -97,6 +109,10 @@ export const addCard = (name, link) => {
     .catch((error) => {
       console.error('Ошибка при добавлении карточки:', error);
       throw error;
+    })
+    .finally(() => {
+      // Возвращаем текст кнопки
+      renderLoading(false, submitButton);
     });
   };
   
