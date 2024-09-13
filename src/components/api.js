@@ -1,8 +1,3 @@
-import {
-  avatarForm,
-  renderLoading,
-  newCardForm
-} from "./index.js";
 
 const configAPI = {
   baseUrl: "https://nomoreparties.co/v1/wff-cohort-22",
@@ -56,11 +51,6 @@ export const fetchCardsData = () => {
 
 // Функция для обновления данных пользователя
 export const updateUserData = (name, about) => {
-  const editProfileForm = document.forms["edit-profile"];
-  const submitButton = editProfileForm.querySelector(".popup__button");
-  // Сохранить...
-  renderLoading(true, submitButton);
-
   return fetch(`${configAPI.baseUrl}/users/me`, {
     method: "PATCH",
     headers: configAPI.headers,
@@ -75,25 +65,14 @@ export const updateUserData = (name, about) => {
       }
       return response.json();
     })
-    .then((updatedUserData) => {
-      return updatedUserData; // Возвращаем обновленные данные пользователя
-    })
     .catch((error) => {
       console.error("Ошибка при обновлении данных пользователя:", error);
       throw error;
-    })
-    .finally(() => {
-      // Возвращаем текст кнопки
-      renderLoading(false, submitButton);
     });
 };
 
-// Функция для добавления новой карточки на сервер
+// Функция для добавления новой карточки
 export const addCard = (name, link) => {
-  const submitButton = newCardForm.querySelector(".popup__button");
-  // Сохранить...
-  renderLoading(true, submitButton);
-
   return fetch(`${configAPI.baseUrl}/cards`, {
     method: "POST",
     headers: configAPI.headers,
@@ -114,10 +93,6 @@ export const addCard = (name, link) => {
     .catch((error) => {
       console.error("Ошибка при добавлении карточки:", error);
       throw error;
-    })
-    .finally(() => {
-      // Возвращаем текст кнопки
-      renderLoading(false, submitButton);
     });
 };
 
@@ -162,12 +137,7 @@ export function removeLike(cardId) {
 
 // Функция для отправки PATCH-запроса для обновления аватара
 export function updateAvatar(avatarUrl) {
-  const submitButton = avatarForm.querySelector(".popup__button");
-
-  // Сохранить...
-  renderLoading(true, submitButton);
-
-  fetch(`${configAPI.baseUrl}/users/me/avatar`, {
+  return fetch(`${configAPI.baseUrl}/users/me/avatar`, {
     method: "PATCH",
     headers: configAPI.headers,
     body: JSON.stringify({
@@ -179,17 +149,7 @@ export function updateAvatar(avatarUrl) {
         return response.json();
       }
       return Promise.reject(`Ошибка: ${response.status}`);
-    })
-    .then((data) => {
-      console.log("Аватар успешно обновлён:", data);
-      const profileImage = document.querySelector(".profile__image");
-      profileImage.style.backgroundImage = `url(${avatarUrl})`; // Обновляем аватар на странице
-    })
-    .catch((error) => {
-      console.error("Ошибка при обновлении аватара:", error);
-    })
-    .finally(() => {
-      // Возвращаем текст кнопки
-      renderLoading(false, submitButton);
     });
 }
+
+

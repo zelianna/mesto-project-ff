@@ -26,10 +26,10 @@ const editProfilePopup = document.querySelector(".popup_type_edit");
 
 const editProfileAvatar = document.querySelector(".popup_type_avatar");
 const profileAvatar = document.querySelector(".profile__image");
-export const avatarForm = document.forms.avatar;
+const avatarForm = document.forms.avatar;
 
 const newCardPopup = document.querySelector(".popup_type_new-card");
-export const newCardForm = newCardPopup.querySelector(".popup__form");
+const newCardForm = newCardPopup.querySelector(".popup__form");
 const imagePopup = document.querySelector(".popup_type_image");
 const nameInput = document.querySelector(".popup__input_type_name");
 const jobInput = document.querySelector(".popup__input_type_description");
@@ -46,16 +46,31 @@ profileAvatar.addEventListener("click", () => {
 //Обновление аватара
 avatarForm.addEventListener("submit", function (event) {
   event.preventDefault();
+  const submitButton = avatarForm.querySelector(".popup__button");
   const avatarInput = document.getElementById("avatar-link").value;
 
   if (avatarInput) {
+    // Сохранить...
+    renderLoading(true, submitButton);
     // Если URL валиден, вызываем функцию обновления аватара
-    updateAvatar(avatarInput);
-    closeModal(editProfileAvatar);
+    updateAvatar(avatarInput)
+      .then((data) => {
+        // Обновляем аватар на странице только при успешном ответе сервера
+        profileAvatar.style.backgroundImage = `url(${data.avatar})`;
+        closeModal(editProfileAvatar); 
+      })
+      .catch((error) => {
+        console.error("Ошибка при обновлении аватара:", error);
+      })
+      .finally(() => {
+        // Возвращаем исходный текст кнопки
+        renderLoading(false, submitButton);
+      });
   } else {
     console.log("Введите корректную ссылку на аватар.");
   }
 });
+
 
 editButton.addEventListener("click", () => {
   nameInput.value = profileName.textContent;
@@ -87,21 +102,29 @@ popups.forEach((popup) => {
   });
 });
 
+
 function handleProfileSubmit(evt) {
   evt.preventDefault();
+  const submitButton = editProfilePopup.querySelector(".popup__button");
   const nameValue = nameInput.value;
   const jobValue = jobInput.value;
 
-  // Отправляем PATCH-запрос на сервер для обновления данных пользователя
+  // Отображаем индикатор загрузки
+  renderLoading(true, submitButton);
+
   updateUserData(nameValue, jobValue)
     .then((updatedUserData) => {
       // Обновляем данные на странице после обновления на сервере
       profileName.textContent = updatedUserData.name;
       profileJob.textContent = updatedUserData.about;
-      closeModal(editProfilePopup);
+      closeModal(editProfilePopup); // Закрываем попап
     })
     .catch((error) => {
       console.error("Ошибка при обновлении профиля:", error);
+    })
+    .finally(() => {
+      // Возвращаем исходный текст кнопки
+      renderLoading(false, submitButton);
     });
 }
 
@@ -111,8 +134,11 @@ function handleNewCardSubmit(evt) {
   evt.preventDefault();
   const placeValue = placeInput.value;
   const linkValue = linkInput.value;
+  
+  const submitButton = newCardForm.querySelector(".popup__button");
+  renderLoading(true, submitButton);  // Показываем "Сохранение..."
 
-  // Отправляем POST-запрос на сервер для добавления новой карточки
+  // Отправляем запрос на добавление карточки
   addCard(placeValue, linkValue)
     .then((newCardData) => {
       // Создаем карточку и добавляем на страницу
@@ -129,13 +155,16 @@ function handleNewCardSubmit(evt) {
       clearValidation(newCardPopup, validationConfig);
     })
     .catch((error) => {
-      console.error("Ошибка при добавлении новой карточки:", error);
+      console.error("Ошибка при добавлении карточки:", error);
+    })
+    .finally(() => {
+      renderLoading(false, submitButton);  // Возвращаем начальный текст кнопки
     });
 }
 
-newCardPopup.addEventListener("submit", handleNewCardSubmit);
+newCardPopup.addEventListener('submit', handleNewCardSubmit);
 
-export function handleImageClick(cardData) {
+function handleImageClick(cardData) {
   const popupImage = imagePopup.querySelector(".popup__image");
   const popupTitle = imagePopup.querySelector(".popup__caption");
 
@@ -185,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Функция для изменения текста кнопки во время загрузки
-export function renderLoading(
+function renderLoading(
   isLoading,
   submitButton,
   loadingText = "Сохранение..."
